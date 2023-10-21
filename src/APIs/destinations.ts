@@ -1,9 +1,19 @@
-export const fetchDestinations = async (): Promise<any> => {
+import { IDestinations } from "../models/destinations";
+
+export const fetchDestinations = async (
+  input: string
+): Promise<IDestinations[]> => {
+  console.log(
+    "Approximate Endpoint : ",
+    // eslint-disable-next-line no-template-curly-in-string
+    "`${SERVER_URL}/destinations?filter[name][_contains]=${input}`"
+  );
   try {
     const response = await fetch("/destinations.json");
-    const res = await response.json();
-    console.log("dests:", res);
+    const destArray = await response.json();
+    return destArray.filter((dest: IDestinations) => dest.name.includes(input));
   } catch (error) {
     console.error("fetching destinations failed");
+    return [];
   }
 };

@@ -7,7 +7,8 @@ function Search() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchDestinations();
+      const result = await fetchDestinations("p");
+      console.log("usee", result);
     };
     fetchData();
     // Fetch data from the fake API
