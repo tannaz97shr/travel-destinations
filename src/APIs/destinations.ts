@@ -23,7 +23,7 @@ export const fetchAllDestinations = async (): Promise<{
 
 export const fetchDestinations = async (
   input: string
-): Promise<{ destinations: IDestination[]; errorMessage?: string }> => {
+): Promise<{ destinations?: IDestination[]; errorMessage?: string }> => {
   console.log(
     "Approximate Endpoint : ",
     // eslint-disable-next-line no-template-curly-in-string
@@ -43,7 +43,6 @@ export const fetchDestinations = async (
   } catch (error) {
     console.error("fetching destinations failed");
     return {
-      destinations: [],
       errorMessage: "fetching destinations failed",
     };
   }
