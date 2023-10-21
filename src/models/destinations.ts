@@ -8,3 +8,8 @@ export interface IDestination {
   latitude: number;
   longitude: number;
 }
+
+export interface IDestinationDetailsResponse {
+  destination?: IDestination;
+  errorMessage?: string;
+}

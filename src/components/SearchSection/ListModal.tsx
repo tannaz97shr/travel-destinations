@@ -4,9 +4,10 @@ import { IconLoading } from "./icons";
 interface ListModalProps {
   locations: IDestination[];
   loading: boolean;
+  resetInput: () => void;
 }
 
-function ListModal({ locations, loading }: ListModalProps) {
+function ListModal({ locations, loading, resetInput }: ListModalProps) {
   console.log("is loading", loading);
   return (
     <ul className="bg-primary border border-custom-purple p-2 mt-4 z-20">

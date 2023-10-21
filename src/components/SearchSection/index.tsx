@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
 
+import { useParams } from "react-router-dom";
 import { fetchDestinations } from "../../APIs/destinations";
 import { IDestination } from "../../models/destinations";
-import { IconSearch } from "./icons";
 import ListModal from "./ListModal";
+import { IconSearch } from "./icons";
 
 function Search() {
   const [inputValue, setInputValue] = useState<string>("");
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [destinationsList, setDestinationsList] = useState<IDestination[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  let { destinationId } = useParams();
+
+  useEffect(() => {
+    setInputValue("");
+    setDebouncedInputValue("");
+    setDestinationsList([]);
+  }, [destinationId]);
 
   useEffect(() => {
     const delayInputTimeoutId = setTimeout(() => {
@@ -44,6 +52,10 @@ function Search() {
     setInputValue(e.currentTarget.value.toLocaleLowerCase());
   };
 
+  const resetInput = () => {
+    setInputValue("");
+  };
+
   return (
     <div
       className="flex flex-col w-full h-40 rounded-lg p-4
@@ -70,7 +82,11 @@ function Search() {
         </div>
       </form>
       {destinationsList.length ? (
-        <ListModal locations={destinationsList} loading={isLoading} />
+        <ListModal
+          resetInput={resetInput}
+          locations={destinationsList}
+          loading={isLoading}
+        />
       ) : null}
     </div>
   );
