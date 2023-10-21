@@ -70,6 +70,7 @@ function Search() {
             <IconSearch fill="#451952" />
           </div>
           <input
+            autoComplete="off"
             onChange={onInputChange}
             type="search"
             id="destination-search"

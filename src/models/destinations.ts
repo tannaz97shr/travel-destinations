@@ -13,3 +13,9 @@ export interface IDestinationDetailsResponse {
   destination?: IDestination;
   errorMessage?: string;
 }
+
+export interface INearbyDest {
+  id: number;
+  name: string;
+  distance: number;
+}
