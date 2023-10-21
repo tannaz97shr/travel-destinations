@@ -8,11 +8,13 @@ import {
 } from "../../APIs/destinations";
 import { calculateDestination } from "../../helpers";
 import { IDestination, INearbyDest } from "../../models/destinations";
+import { IconLoading } from "../SearchSection/icons";
 import Info from "./Info";
 import NearbyTag from "./NearbyTag";
 
 function Details() {
   const [fiveNearby, setFiveNearby] = useState<INearbyDest[]>([]);
+  const [isNearbyLoading, setIsNearbyLoading] = useState<boolean>(false);
   let { destinationId } = useParams();
   const { data } = useQuery({
     queryKey: ["destination"],
@@ -21,6 +23,7 @@ function Details() {
   useEffect(() => {
     if (data?.destination) {
       const getFiveNearby = async (lat: number, lon: number) => {
+        setIsNearbyLoading(true);
         const allDestinations = await fetchAllDestinations();
         if (!allDestinations.destinations) return;
         const nearbys: INearbyDest[] = allDestinations.destinations.flatMap(
@@ -51,12 +54,13 @@ function Details() {
         );
         console.log("result", sortedArray.slice(1, 6));
         setFiveNearby([...sortedArray.slice(1, 6)]);
+        setIsNearbyLoading(false);
       };
       getFiveNearby(data?.destination.latitude, data?.destination.longitude);
     }
   }, [data?.destination]);
   return (
-    <div className="flex flex-col mt-6 p-4 border border-custom-pink rounded-lg">
+    <div className="flex flex-col mt-6 p-4 border border-custom-pink rounded-lg min-h-[400px]">
       <div className="font-bold text-custom-yellow text-lg mb-3">
         {data?.destination?.name}
       </div>
@@ -73,11 +77,17 @@ function Details() {
       <div className="font-bold text-custom-yellow text-lg">
         Nearby Deatinations :
       </div>
-      <div className="flex flex-wrap mt-4">
-        {fiveNearby.map((dest: INearbyDest) => (
-          <NearbyTag key={dest.id} id={dest.id} name={dest.name} />
-        ))}
-      </div>
+      {isNearbyLoading ? (
+        <div className="flex justify-center items-center">
+          <IconLoading /> Loading...
+        </div>
+      ) : (
+        <div className="flex flex-wrap mt-4">
+          {fiveNearby.map((dest: INearbyDest) => (
+            <NearbyTag key={dest.id} id={dest.id} name={dest.name} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
