@@ -8,7 +8,6 @@ interface ListModalProps {
 }
 
 function ListModal({ locations, loading, resetInput }: ListModalProps) {
-  console.log("is loading", loading);
   return (
     <div className=" flex flex-col bg-primary border border-custom-purple p-2 mt-4 z-20">
       {loading ? (
