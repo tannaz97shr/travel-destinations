@@ -11,6 +11,7 @@ function Search() {
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [destinationsList, setDestinationsList] = useState<IDestination[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [inputError, setInputError] = useState<boolean>(false);
   let { destinationId } = useParams();
 
   useEffect(() => {
@@ -48,6 +49,11 @@ function Search() {
     }
   }, [debouncedInputValue]);
 
+  useEffect(() => {
+    setInputError(!destinationsList.length && inputValue ? true : false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destinationsList]);
+
   const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value.toLocaleLowerCase());
   };
@@ -74,13 +80,18 @@ function Search() {
             onChange={onInputChange}
             type="search"
             id="destination-search"
-            className="block w-full p-4 pl-10 text-sm border rounded-lg
-            bg-gray-700 border-gray-600 placeholder-gray-400 text-light
-            focus:ring-custom-pink focus:border-custom-pink"
+            className={`block w-full p-4 pl-10 text-sm border rounded-lg
+            bg-gray-700 ${
+              inputError ? "border-red-500" : "border-gray-600"
+            } placeholder-gray-400 text-light
+            focus:ring-custom-pink focus:border-custom-pink`}
             placeholder="Search Travel Destinations ..."
             required
           />
         </div>
+        {inputError ? (
+          <span className="text-red-500 mt-2">No destination matches.</span>
+        ) : null}
       </form>
       {destinationsList.length ? (
         <ListModal
