@@ -18,6 +18,10 @@ function Search() {
   }, [inputValue]);
 
   useEffect(() => {
+    if (!debouncedInputValue) {
+      setDestinationsList([]);
+      return;
+    }
     const fetchData = async (input: string) => {
       const result = await fetchDestinations(input);
       console.log("result", result);
@@ -58,7 +62,9 @@ function Search() {
           />
         </div>
       </form>
-      {destinationsList && <ListModal locations={destinationsList} />}
+      {destinationsList.length ? (
+        <ListModal locations={destinationsList} />
+      ) : null}
     </div>
   );
 }
