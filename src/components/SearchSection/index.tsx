@@ -1,21 +1,31 @@
+import { useEffect, useState } from "react";
+
 import { fetchDestinations } from "../../APIs/destinations";
+import { IDestination } from "../../models/destinations";
 import { IconSearch } from "./icons";
 
 function Search() {
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       const result = await fetchDestinations("p");
-  //       console.log("usee", result);
-  //     };
-  //     fetchData();
-  //   }, []);
-  const fetchData = async (input: string) => {
-    const result = await fetchDestinations(input.toLocaleLowerCase());
-    console.log("usee", result);
-  };
+  const [inputValue, setInputValue] = useState<string>("");
+  const [debouncedInputValue, setDebouncedInputValue] = useState("");
+  const [destinationsList, setDestinationsList] = useState<IDestination[]>([]);
+
+  useEffect(() => {
+    const delayInputTimeoutId = setTimeout(() => {
+      setDebouncedInputValue(inputValue);
+    }, 500);
+    return () => clearTimeout(delayInputTimeoutId);
+  }, [inputValue]);
+
+  useEffect(() => {
+    const fetchData = async (input: string) => {
+      const result = await fetchDestinations(input.toLocaleLowerCase());
+      if (result.destinations.length) setDestinationsList(result.destinations);
+    };
+    fetchData(debouncedInputValue);
+  }, [debouncedInputValue]);
+
   const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const newValue: string = e.currentTarget.value;
-    fetchData(newValue);
+    setInputValue(e.currentTarget.value.toLocaleLowerCase());
   };
 
   return (

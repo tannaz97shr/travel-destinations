@@ -1,8 +1,8 @@
-import { IDestinations } from "../models/destinations";
+import { IDestination } from "../models/destinations";
 
 export const fetchDestinations = async (
   input: string
-): Promise<IDestinations[] | { errorMessage: string }> => {
+): Promise<{ destinations: IDestination[]; errorMessage?: string }> => {
   console.log(
     "Approximate Endpoint : ",
     // eslint-disable-next-line no-template-curly-in-string
@@ -14,12 +14,13 @@ export const fetchDestinations = async (
     }
     const response = await fetch("/destinations.json");
     const destArray = await response.json();
-    return destArray.filter((dest: IDestinations) =>
+    return destArray.filter((dest: IDestination) =>
       dest.name.toLocaleLowerCase().includes(input)
     );
   } catch (error) {
     console.error("fetching destinations failed");
     return {
+      destinations: [],
       errorMessage: "fetching destinations failed",
     };
   }
