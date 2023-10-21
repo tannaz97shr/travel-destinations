@@ -9,6 +9,7 @@ function Search() {
   const [inputValue, setInputValue] = useState<string>("");
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [destinationsList, setDestinationsList] = useState<IDestination[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const delayInputTimeoutId = setTimeout(() => {
@@ -22,15 +23,21 @@ function Search() {
       setDestinationsList([]);
       return;
     }
+
     const fetchData = async (input: string) => {
+      setIsLoading(true);
       const result = await fetchDestinations(input);
-      console.log("result", result);
       if (result.destinations) {
-        console.log(result);
         setDestinationsList(result.destinations);
       }
+      setTimeout(() => {
+        console.log("waiting...");
+      }, 1000);
+      setIsLoading(false);
     };
-    if (debouncedInputValue) fetchData(debouncedInputValue);
+    if (debouncedInputValue) {
+      fetchData(debouncedInputValue);
+    }
   }, [debouncedInputValue]);
 
   const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -63,7 +70,7 @@ function Search() {
         </div>
       </form>
       {destinationsList.length ? (
-        <ListModal locations={destinationsList} />
+        <ListModal locations={destinationsList} loading={isLoading} />
       ) : null}
     </div>
   );
