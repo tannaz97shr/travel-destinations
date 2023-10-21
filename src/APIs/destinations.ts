@@ -14,9 +14,11 @@ export const fetchDestinations = async (
     }
     const response = await fetch("/destinations.json");
     const destArray = await response.json();
-    return destArray.filter((dest: IDestination) =>
-      dest.name.toLocaleLowerCase().includes(input)
-    );
+    return {
+      destinations: destArray.filter((dest: IDestination) =>
+        dest.name.toLocaleLowerCase().includes(input)
+      ),
+    };
   } catch (error) {
     console.error("fetching destinations failed");
     return {

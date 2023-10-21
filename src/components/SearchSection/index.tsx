@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { fetchDestinations } from "../../APIs/destinations";
 import { IDestination } from "../../models/destinations";
 import { IconSearch } from "./icons";
+import ListModal from "./ListModal";
 
 function Search() {
   const [inputValue, setInputValue] = useState<string>("");
@@ -18,10 +19,14 @@ function Search() {
 
   useEffect(() => {
     const fetchData = async (input: string) => {
-      const result = await fetchDestinations(input.toLocaleLowerCase());
-      if (result.destinations.length) setDestinationsList(result.destinations);
+      const result = await fetchDestinations(input);
+      console.log("result", result);
+      if (result.destinations) {
+        console.log(result);
+        setDestinationsList(result.destinations);
+      }
     };
-    fetchData(debouncedInputValue);
+    if (debouncedInputValue) fetchData(debouncedInputValue);
   }, [debouncedInputValue]);
 
   const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -30,7 +35,7 @@ function Search() {
 
   return (
     <div
-      className="flex w-full h-40 rounded-lg p-4
+      className="flex flex-col w-full h-40 rounded-lg p-4
     bg-secondary border border-custom-pink"
     >
       <form className="w-full">
@@ -53,6 +58,7 @@ function Search() {
           />
         </div>
       </form>
+      {destinationsList && <ListModal locations={destinationsList} />}
     </div>
   );
 }
