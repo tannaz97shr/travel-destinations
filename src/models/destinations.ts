@@ -9,6 +9,11 @@ export interface IDestination {
   longitude: number;
 }
 
+export interface IDestinationsResponse {
+  destinations?: IDestination[];
+  errorMessage?: string;
+}
+
 export interface IDestinationDetailsResponse {
   destination?: IDestination;
   errorMessage?: string;

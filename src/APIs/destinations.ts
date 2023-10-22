@@ -1,29 +1,28 @@
 import {
   IDestination,
   IDestinationDetailsResponse,
+  IDestinationsResponse,
 } from "../models/destinations";
 
-export const fetchAllDestinations = async (): Promise<{
-  destinations?: IDestination[];
-  errorMessage?: string;
-}> => {
-  try {
-    const response = await fetch("/destinations.json");
-    const destArray = await response.json();
-    return {
-      destinations: destArray,
-    };
-  } catch (error) {
-    console.error("fetching destinations failed");
-    return {
-      errorMessage: "fetching destinations failed",
-    };
-  }
-};
+export const fetchAllDestinations =
+  async (): Promise<IDestinationsResponse> => {
+    try {
+      const response = await fetch("/destinations.json");
+      const destArray = await response.json();
+      return {
+        destinations: destArray,
+      };
+    } catch (error) {
+      console.error("fetching destinations failed");
+      return {
+        errorMessage: "fetching destinations failed",
+      };
+    }
+  };
 
-export const fetchDestinations = async (
+export const fetchDestinationsByName = async (
   input: string
-): Promise<{ destinations?: IDestination[]; errorMessage?: string }> => {
+): Promise<IDestinationsResponse> => {
   console.log(
     "Approximate Endpoint : ",
     // eslint-disable-next-line no-template-curly-in-string

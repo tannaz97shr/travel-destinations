@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
-import { fetchDestinations } from "../../APIs/destinations";
+import { fetchDestinationsByName } from "../../APIs/destinations";
 import { IDestination } from "../../models/destinations";
 import ListModal from "./ListModal";
 import { IconSearch } from "./icons";
@@ -11,7 +11,7 @@ function Search() {
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [destinationsList, setDestinationsList] = useState<IDestination[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [inputError, setInputError] = useState<boolean>(false);
+  const [inputError, setInputError] = useState<string>("");
   let { destinationId } = useParams();
 
   useEffect(() => {
@@ -30,15 +30,20 @@ function Search() {
   useEffect(() => {
     if (!debouncedInputValue) {
       setDestinationsList([]);
+      setInputError("");
       return;
     }
 
     const fetchData = async (input: string) => {
       setIsLoading(true);
-      const result = await fetchDestinations(input);
+      const result = await fetchDestinationsByName(input);
       if (result.destinations) {
         setDestinationsList(result.destinations);
+        setInputError("");
       }
+      if (result.destinations?.length === 0)
+        setInputError("No destination matches.");
+      if (result.errorMessage) setInputError(result.errorMessage);
       setTimeout(() => {
         console.log("waiting...");
       }, 1000);
@@ -48,11 +53,6 @@ function Search() {
       fetchData(debouncedInputValue);
     }
   }, [debouncedInputValue]);
-
-  useEffect(() => {
-    setInputError(!destinationsList.length && inputValue ? true : false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [destinationsList]);
 
   const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     setInputValue(e.currentTarget.value.toLocaleLowerCase());
@@ -90,7 +90,7 @@ function Search() {
           />
         </div>
         {inputError ? (
-          <span className="text-red-500 mt-2">No destination matches.</span>
+          <span className="text-red-500 mt-2">{inputError}</span>
         ) : null}
       </form>
       {destinationsList.length ? (
