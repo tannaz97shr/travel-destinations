@@ -1,5 +1,5 @@
 import { IDestination } from "../../models/destinations";
-import { IconLoading } from "./icons";
+import Loading from "../UIComponents";
 
 interface ListModalProps {
   locations: IDestination[];
@@ -11,9 +11,7 @@ function ListModal({ locations, loading, resetInput }: ListModalProps) {
   return (
     <div className=" flex flex-col bg-primary border border-custom-purple p-2 mt-4 z-20">
       {loading ? (
-        <div className="flex justify-center items-center">
-          <IconLoading /> Loading...
-        </div>
+        <Loading />
       ) : (
         locations.map((location: IDestination) => (
           <a

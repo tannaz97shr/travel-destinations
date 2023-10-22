@@ -8,7 +8,7 @@ import {
 } from "../../APIs/destinations";
 import { calculateDestination } from "../../helpers";
 import { IDestination, INearbyDest } from "../../models/destinations";
-import { IconLoading } from "../SearchSection/icons";
+import Loading from "../UIComponents";
 import Info from "./Info";
 import NearbyTag from "./NearbyTag";
 
@@ -78,9 +78,7 @@ function Details() {
         Nearby Deatinations :
       </div>
       {isNearbyLoading ? (
-        <div className="flex justify-center items-center">
-          <IconLoading /> Loading...
-        </div>
+        <Loading />
       ) : (
         <div className="flex flex-wrap mt-4">
           {fiveNearby.map((dest: INearbyDest) => (
