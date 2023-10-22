@@ -23,7 +23,6 @@ function Details() {
   useEffect(() => {
     if (data?.destination) {
       const getFiveNearby = async (lat: number, lon: number) => {
-        setIsNearbyLoading(true);
         const allDestinations = await fetchAllDestinations();
         if (!allDestinations.destinations) return;
         const nearbys: INearbyDest[] = allDestinations.destinations.flatMap(
@@ -54,9 +53,10 @@ function Details() {
         );
         console.log("result", sortedArray.slice(1, 6));
         setFiveNearby([...sortedArray.slice(1, 6)]);
-        setIsNearbyLoading(false);
       };
+      setIsNearbyLoading(true);
       getFiveNearby(data?.destination.latitude, data?.destination.longitude);
+      setIsNearbyLoading(false);
     }
   }, [data?.destination]);
   return (

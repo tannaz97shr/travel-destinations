@@ -35,7 +35,6 @@ function Search() {
     }
 
     const fetchData = async (input: string) => {
-      setIsLoading(true);
       const result = await fetchDestinationsByName(input);
       if (result.destinations) {
         setDestinationsList(result.destinations);
@@ -47,10 +46,11 @@ function Search() {
       setTimeout(() => {
         console.log("waiting...");
       }, 1000);
-      setIsLoading(false);
     };
     if (debouncedInputValue) {
+      setIsLoading(true);
       fetchData(debouncedInputValue);
+      setIsLoading(false);
     }
   }, [debouncedInputValue]);
 
