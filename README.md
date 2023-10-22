@@ -1,10 +1,28 @@
-# travel-destinations
+# Travel Destinations
 
-## Libraires and technologies :
+## Overview
 
-- Tailwind for design
-- React Query for caching
-- React Router for adding query params
+- This project is to search through travel destinations and read information about the destination, Moreover when a destination is selected, nearby destinations are suggested.
+
+## Design Decisions
+
+- **UI Framework - Tailwind CSS**: Tailwind CSS promotes a modular approach to styling by using utility classes. This allows for a highly scalable codebase where styles can be easily organized, reused, and modified. As the project grows, it becomes easier to maintain and manage the styles since changes can be applied consistently across the project.
+
+- **Data Caching - React Query**: React Query allows us to prefetch data before it's actually needed, which improves the performance of your application, especially in cases like pagination. By prefetching data in advance, you can reduce latency and provide a seamless user experience.
+
+- **Routing - React Router v6**: Used React Router v6 for URL parameters and routing. Besides it is used for nested routing in a way that for previewing each destination there is a specific URL
+
+## Technologies Used
+
+- React: Compared to other frontend frameworks, the React code is easier to maintain and is flexible due to its modular structure. This flexibility, in turn, saves a huge amount of time and cost to businesses.
+
+- React Query: Highlight how React Query improves data management and caching.
+
+- React Router v6: When you use React Query to fetch data, the results are stored in a local cache. This means that if you request the same data again, React Query will return the cached results instead of making another API call. The cache is automatically invalidated when the data changes, so you'll always get the latest data.
+
+- Tailwind CSS: With Tailwind, you style elements by applying pre-existing classes directly in your HTML. By using utility classes in this way, you can build custom designs without writing CSS.
+
+- Other technologies, if applicable (e.g., Node.js, Express.js, etc.).
 
 # Getting Started with Create React App
 
